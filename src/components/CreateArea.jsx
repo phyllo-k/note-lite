@@ -31,7 +31,7 @@ function CreateArea(props) {
     }
 
     function toggleFocus() {
-        setFocused(isFocused && note.title === "" ? false : true);
+        setFocused(isFocused && note.content === "" ? false : true);
     }
 
     return (
