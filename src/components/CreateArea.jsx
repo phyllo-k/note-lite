@@ -1,10 +1,10 @@
-import React, {useState} from "react";
+import React, { useState} from "react";
 import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab';
 import Zoom from '@mui/material/Zoom';
 
 function CreateArea(props) {
-    const [isFocused, setFocused] = useState(false);
+    const [isExpanded, setExpanded] = useState(false);
     const [note, setNote] = useState({
         title: "",
         content: ""
@@ -13,33 +13,33 @@ function CreateArea(props) {
     function handleChange(event) {
         const {name, value} = event.target;
 
-        setNote((prevValue) => {
+        setNote((preValue) => {
             return {
-                ...prevValue,
+                ...preValue,
                [name]: value
             }
         });
     }
 
     function handleClick(event) {
-        if (note.title !== "") {
-            props.addNote(note);
-            setFocused(false);
+        event.preventDefault();
+        if (note.title !== "" || note.content !== "") {
+            props.onAdd(note);
+            setExpanded(false);
             setNote({title: "", content: ""});
         }
-        event.preventDefault();
     }
 
     function toggleFocus() {
-        setFocused(isFocused && note.content === "" && note.title === "" ? false : true);
+        setExpanded(isExpanded && note.content === "" && note.title === "" ? false : true);
     }
 
     return (
         <div>
             <form className="create-note">
-            <input onChange={handleChange} onClick={toggleFocus} name="title" value={note.title} autoComplete="off" placeholder={isFocused ? "Title" : "Take a note..."} />
-            {isFocused && <textarea onChange={handleChange} name="content" value={note.content} placeholder="Take a note..." rows="3" />}
-            {isFocused && <Zoom in={true}><Fab onClick={handleClick}><AddIcon /></Fab></Zoom>}
+            {isExpanded && <input onChange={handleChange} name="title" value={note.title} autoComplete="off" placeholder={isExpanded ? "Title" : "Take a note..."} />}
+            <textarea onChange={handleChange} onClick={toggleFocus} name="content" value={note.content} placeholder="Take a note..." rows={isExpanded ? 3 : 1} />
+            {isExpanded && <Zoom in={true}><Fab onClick={handleClick}><AddIcon /></Fab></Zoom>}
             </form>
         </div>
     );

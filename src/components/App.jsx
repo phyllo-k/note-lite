@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Header from "./Header";
 import Footer from "./Footer";
 import Note from "./Note";
@@ -7,34 +8,42 @@ import CreateArea from "./CreateArea";
 function App() {
     const [notes, setNotes] = useState([]);
 
-    function addNote(note) {
-        setNotes((prevValue) => {
-            return [...prevValue, note];
+    useEffect(() => {
+        axios.get("/notes")
+            .then(res => { res.data.length > 0 && setNotes(res.data);
         });
+    }, []);
+
+    function addNote(note) {
+        setNotes(preValue => {
+            return [...preValue, note];
+        });
+        axios.post("/notes", note);
     }
 
     function deleteNote(id) {
-        setNotes((prevValue) => {
-            return prevValue.filter((note, index) => {
-                return index !== id;
+        setNotes(preValue => {
+            return preValue.filter((note) => {
+                return note._id !== id;
             });
         });
+        axios.delete(`/notes/${id}`);
     }
 
     return (
         <div>
-        <Header />
-        <CreateArea addNote={addNote} />
-        {notes.map((note, index) => {
-            return <Note
-                key = {index}
-                id = {index}
-                title = {note.title}
-                content = {note.content}
-                deleteNote = {deleteNote}
-            />
-        })}
-        <Footer />
+            <Header />
+            <CreateArea onAdd={addNote} />
+            {notes.map((note, index) => {
+                return <Note
+                    key = {note._id}
+                    id = {note._id}
+                    title = {note.title}
+                    content = {note.content}
+                    onDelete = {deleteNote}
+                />
+            })}
+            <Footer />
         </div>
     );
 }
