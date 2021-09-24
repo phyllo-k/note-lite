@@ -31,7 +31,7 @@ app.on("ready", function () {
         console.log(`Server is running on port ${PORT}...`);
     });
 })
-mongoose.connect(DB).then(connect => console.log("Connected to mongodb...")).catch(e => console.log("Could not connect to mongodb", e));
+mongoose.connect(DB).then(connect => console.log("Connected to mongodb...")).catch(err => console.log("Could not connect to mongodb", err));
 mongoose.connection.once("open", function () {
     app.emit("ready");
 });

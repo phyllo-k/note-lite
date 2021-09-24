@@ -3,7 +3,7 @@ import React from "react";
 function Header() {
     return (
         <header>
-            <h1><a href="/Note-Lite/">Note Lite</a></h1>
+            <h1><a href="/">Note Lite</a></h1>
         </header>
     );
 }
