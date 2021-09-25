@@ -13,7 +13,7 @@ function CreateArea(props) {
     function handleChange(event) {
         const {name, value} = event.target;
 
-        setNote((preValue) => {
+        setNote(preValue => {
             return {
                 ...preValue,
                [name]: value
@@ -30,7 +30,7 @@ function CreateArea(props) {
         }
     }
 
-    function toggleFocus() {
+    function toggleExpanded() {
         setExpanded(isExpanded && note.content === "" && note.title === "" ? false : true);
     }
 
@@ -38,7 +38,7 @@ function CreateArea(props) {
         <div>
             <form className="create-note">
             {isExpanded && <input onChange={handleChange} name="title" value={note.title} autoComplete="off" placeholder={isExpanded ? "Title" : "Take a note..."} />}
-            <textarea onChange={handleChange} onClick={toggleFocus} name="content" value={note.content} placeholder="Take a note..." rows={isExpanded ? 3 : 1} />
+            <textarea onChange={handleChange} onClick={toggleExpanded} name="content" value={note.content} placeholder="Take a note..." rows={isExpanded ? 3 : 1} />
             {isExpanded && <Zoom in={true}><Fab onClick={handleClick}><AddIcon /></Fab></Zoom>}
             </form>
         </div>

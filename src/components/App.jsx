@@ -15,10 +15,11 @@ function App() {
     }, []);
 
     function addNote(note) {
-        setNotes(preValue => {
-            return [...preValue, note];
-        });
-        axios.post("/notes", note);
+        axios.post("/notes", note)
+            .then(setNotes(preValue => {
+                return [...preValue, note];
+            }))
+        ;
     }
 
     function deleteNote(id) {
