@@ -8,27 +8,37 @@ import CreateArea from "./CreateArea";
 function App() {
     const [notes, setNotes] = useState([]);
 
-    useEffect(() => {
-        axios.get("/notes")
-            .then(res => { res.data.length > 0 && setNotes(res.data);
-        });
+    useEffect(async () => {
+        try {
+            const res = await axios.get("/notes");
+            res.data.length > 0 && setNotes(res.data);
+        } catch (err) {
+            console.log(err);
+        }
     }, []);
 
-    function addNote(note) {
-        axios.post("/notes", note)
-            .then(setNotes(preValue => {
-                return [...preValue, note];
-            }))
-        ;
+    async function addNote(note) {
+        try {
+            const res = await axios.post("/notes", note);
+            setNotes(preValue => {
+                return[...preValue, res.data];
+            })
+        } catch (err) {
+            console.log(err);
+        }
     }
 
-    function deleteNote(id) {
-        setNotes(preValue => {
-            return preValue.filter((note) => {
-                return note._id !== id;
+    async function deleteNote(id) {
+        try {
+            const res = await axios.delete(`/notes/${id}`);
+            setNotes(preValue => {
+                return preValue.filter((note) => {
+                    return note._id !== id;
+                });
             });
-        });
-        axios.delete(`/notes/${id}`);
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     return (

@@ -8,13 +8,13 @@ router.route("/")
             .catch(err => res.status(400).json("Error: " + err));
     })
 
-    .post(function (req, res) {
+    .post((req, res) => {
         const newNote = new Note({
             title: req.body.title,
             content: req.body.content
         })
         newNote.save()
-            .then(() => res.json("Note added!"))
+            .then(() => res.json(newNote))
             .catch(err => res.status(400).json("Error: " + err));
     })
 ;
