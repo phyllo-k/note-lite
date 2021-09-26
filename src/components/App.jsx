@@ -14,7 +14,7 @@ function App() {
             res.data.length > 0 && setNotes(res.data);
         } catch (err) {
             console.log(err);
-        }
+        }        
     }, []);
 
     async function addNote(note) {
